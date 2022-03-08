@@ -1,4 +1,5 @@
-﻿using System.Net.Sockets;
+﻿using System.Net;
+using System.Net.Sockets;
 using CoreOSC;
 using CoreOSC.IO;
 using Newtonsoft.Json;
@@ -12,7 +13,7 @@ namespace VRCHypeRate.Client;
 public class HypeRateClient
 {
     private const string URI = "wss://app.hyperate.io/socket/websocket?token=";
-    private const string OSCURI = "127.0.0.1";
+    private static readonly string OSCURI = IPAddress.Loopback.ToString();
     private const int OSCPort = 9000;
     
     private readonly string Id;
