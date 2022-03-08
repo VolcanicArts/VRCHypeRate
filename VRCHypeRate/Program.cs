@@ -1,4 +1,4 @@
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using VRCHypeRate.Client;
 using VRCHypeRate.Models;
 using VRCHypeRate.Utils;
@@ -8,7 +8,7 @@ namespace VRCHypeRate;
 public static class Program
 {
     private static readonly Logger Logger = Logger.GetLogger("VRCHypeRate");
-    public static ConfigModel Config = null!;
+    internal static ConfigModel Config = null!;
     public static void Main()
     {
         string configFile;
