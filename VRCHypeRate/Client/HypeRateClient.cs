@@ -3,6 +3,7 @@ using CoreOSC;
 using CoreOSC.IO;
 using Newtonsoft.Json;
 using VRCHypeRate.Models;
+using VRCHypeRate.Utils;
 using WebSocket4Net;
 using ErrorEventArgs = SuperSocket.ClientEngine.ErrorEventArgs;
 
@@ -16,6 +17,8 @@ public class HypeRateClient
     private WebSocket webSocket = null!;
     private UdpClient oscClient = null!;
     private Timer heartBeatTimer;
+
+    private Logger Logger = Logger.GetLogger(nameof(HypeRateClient));
 
     public HypeRateClient(string Id, string ApiKey)
     {
@@ -31,7 +34,7 @@ public class HypeRateClient
 
     private void connect()
     {
-        Console.WriteLine("Attempting connection");
+        Logger.Log("Attempting connection");
         var URL = URI + ApiKey;
         webSocket = new WebSocket(URL);
         webSocket.Opened += WsConnected;
@@ -44,12 +47,12 @@ public class HypeRateClient
 
     private void WsError(object? sender, ErrorEventArgs e)
     {
-        Console.WriteLine(e.Exception);
+        Logger.Log(e.Exception.ToString());
     }
 
     private void WsConnected(object? sender, EventArgs e)
     {
-        Console.WriteLine("Successfully connected!");
+        Logger.Log("Successfully connected!");
         sendJoinChannel();
         initHeartBeat();
     }
@@ -61,14 +64,14 @@ public class HypeRateClient
 
     private void sendHeartBeat(object? _)
     {
-        Console.WriteLine("Sending heartbeat");
+        Logger.Log("Sending heartbeat to websocket");
         var heartBeatModel = new WebSocketHeartBeatModel();
         webSocket.Send(JsonConvert.SerializeObject(heartBeatModel));
     }
 
     private void sendJoinChannel()
     {
-        Console.WriteLine("Sending join channel");
+        Logger.Log("Attempting to join channel for websocket");
         var joinChannelModel = new JoinChannelModel
         {
             Id = Id
@@ -92,7 +95,7 @@ public class HypeRateClient
     private void handleHrUpdate(HeartRateUpdateModel update)
     {
         var heartRate = update.Payload.HeartRate;
-        Console.WriteLine($"Received heartrate {heartRate}");
+        Logger.Log($"Received heartrate {heartRate}");
 
         switch (Program.Config.Mode)
         {
@@ -107,13 +110,14 @@ public class HypeRateClient
                 sendParameter("HeartrateHundreds", individualValues[0]);
                 break;
             default:
-                Console.WriteLine("Invalid mode defined");
+                Logger.Log("Invalid mode defined");
                 break;
         }
     }
 
     private void sendParameter(string name, object value)
     {
+        Logger.Log($"Sending parameter {name} of value {value}");
         var message = new OscMessage(new Address($"/avatar/parameters/{name}"), new[] { value });
         oscClient.SendMessageAsync(message);
     }
