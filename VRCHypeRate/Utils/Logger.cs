@@ -19,8 +19,7 @@ public class Logger
 
     public void Error(string message)
     {
-        logToFile(message, LogLevel.Error);
-        logToConsole(message, LogLevel.Error);
+        Log(message, LogLevel.Error);
     }
 
     public void Log(string message, LogLevel logLevel = LogLevel.Verbose)
@@ -50,7 +49,7 @@ public class Logger
 
 public enum LogLevel
 {
-    Error = -1,
     Debug = 0,
-    Verbose = 1
+    Verbose = 1,
+    Error = 2
 }
