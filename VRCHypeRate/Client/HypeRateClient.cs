@@ -83,7 +83,11 @@ public class HypeRateClient
     {
         Logger.Log(e.Message, LogLevel.Debug);
         var eventModel = JsonConvert.DeserializeObject<EventModel>(e.Message);
-        if (eventModel == null) return;
+        if (eventModel == null)
+        {
+            Logger.Log($"Received an unrecognised message:\n{e.Message}");
+            return;
+        }
 
         switch (eventModel.Event)
         {
