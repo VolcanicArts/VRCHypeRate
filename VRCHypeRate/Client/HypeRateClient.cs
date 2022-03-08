@@ -33,8 +33,7 @@ public class HypeRateClient
 
     public void Connect()
     {
-        var thread = new Thread(connect);
-        thread.Start();
+        new Thread(connect).Start();
     }
 
     private void connect()
@@ -86,7 +85,7 @@ public class HypeRateClient
 
     private void sendJoinChannel()
     {
-        Logger.Log("Attempting to join channel for websocket");
+        Logger.Log("Requesting to join channel for websocket");
         var joinChannelModel = new JoinChannelModel
         {
             Id = Id
