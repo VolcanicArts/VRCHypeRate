@@ -11,6 +11,7 @@ public class HypeRateClient
     private readonly string Id;
     private readonly string ApiKey;
     private WebSocket webSocket = null!;
+    private Timer heartBeatTimer;
     
     public HypeRateClient(string Id, string ApiKey)
     {
@@ -45,6 +46,19 @@ public class HypeRateClient
     {
         Console.WriteLine("Successfully connected!");
         sendJoinChannel();
+        initHeartBeat();
+    }
+
+    private void initHeartBeat()
+    {
+        heartBeatTimer = new Timer(sendHeartBeat, null, 30000, Timeout.Infinite);
+    }
+
+    private void sendHeartBeat(object? _)
+    {
+        Console.WriteLine("Sending heartbeat");
+        var heartBeatModel = new WebSocketHeartBeatModel();
+        webSocket.Send(JsonConvert.SerializeObject(heartBeatModel));
     }
 
     private void sendJoinChannel()
@@ -59,6 +73,20 @@ public class HypeRateClient
 
     private void WsMessageReceived(object? sender, MessageReceivedEventArgs e)
     {
-        
+        var eventModel = JsonConvert.DeserializeObject<EventModel>(e.Message);
+        if (eventModel == null) return;
+
+        switch (eventModel.Event)
+        {
+            case "hr_update":
+                handleHrUpdate(JsonConvert.DeserializeObject<HeartRateUpdateModel>(e.Message)!);
+                break;
+        }
+    }
+
+    private void handleHrUpdate(HeartRateUpdateModel update)
+    {
+        var heartRate = update.Payload.HeartRate;
+        Console.WriteLine(heartRate);
     }
 }
