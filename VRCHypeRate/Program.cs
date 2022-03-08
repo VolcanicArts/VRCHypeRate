@@ -11,10 +11,23 @@ public static class Program
     public static ConfigModel Config = null!;
     public static void Main()
     {
-        var config = JsonConvert.DeserializeObject<ConfigModel>(File.ReadAllText("./config.json"));
-        if (config == null)
+        var configFile = string.Empty;
+        try
+        {
+            configFile = File.ReadAllText("./config.json");
+        }
+        catch (FileNotFoundException)
         {
             Logger.Log("Please define a config (config.json)");
+            Console.ReadLine();
+            return;
+        }
+
+        var config = JsonConvert.DeserializeObject<ConfigModel>(configFile);
+        if (config == null)
+        {
+            Logger.Log("Please define a valid config (config.json)");
+            Console.ReadLine();
             return;
         }
 
