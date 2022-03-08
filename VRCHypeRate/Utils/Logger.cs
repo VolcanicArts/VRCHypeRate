@@ -2,7 +2,8 @@
 
 public class Logger
 {
-    public static LogLevel LogLevel = LogLevel.Verbose;
+    private const LogLevel LogLevel = Utils.LogLevel.Verbose;
+
     public static Logger GetLogger(string className)
     {
         return new Logger(className);
