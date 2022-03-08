@@ -20,6 +20,7 @@ public class HypeRateClient
     private WebSocket webSocket = null!;
     private UdpClient oscClient = null!;
     private Timer heartBeatTimer;
+    private bool IsRunning = true;
 
     private Logger Logger = Logger.GetLogger(nameof(HypeRateClient));
 
@@ -47,13 +48,14 @@ public class HypeRateClient
         webSocket.OpenAsync();
         Logger.Log($"Creating OSC client with URI {OSCURI} and port {OSCPort}");
         oscClient = new UdpClient(OSCURI, OSCPort);
-        while (true) { }
+        while (IsRunning) { }
     }
 
     private void WsDisconnected(object? sender, EventArgs e)
     {
         Logger.Log("Websocket has disconnected");
         heartBeatTimer.Dispose();
+        IsRunning = false;
     }
 
     private void WsError(object? sender, ErrorEventArgs e)
