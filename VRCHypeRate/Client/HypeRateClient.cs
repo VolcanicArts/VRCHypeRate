@@ -81,6 +81,7 @@ public class HypeRateClient
 
     private void WsMessageReceived(object? sender, MessageReceivedEventArgs e)
     {
+        Logger.Log(e.Message, LogLevel.Debug);
         var eventModel = JsonConvert.DeserializeObject<EventModel>(e.Message);
         if (eventModel == null) return;
 
