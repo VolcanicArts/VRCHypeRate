@@ -9,31 +9,33 @@ public static class Program
 {
     private static readonly Logger Logger = Logger.GetLogger("VRCHypeRate");
     internal static ConfigModel Config = null!;
+
     public static void Main()
     {
-        string configFile;
+        setupConfig();
+        setupClient();
+    }
+
+    private static void setupClient()
+    {
+        new HypeRateClient(Config.Id, Config.ApiKey).Connect();
+    }
+
+    private static void setupConfig()
+    {
         try
         {
-            configFile = File.ReadAllText("./config.json");
+            Config = Storage.GetFileAsJson<ConfigModel>("./config.json");
         }
-        catch (FileNotFoundException)
+        catch (FileNotFoundException e)
         {
-            Logger.Log("Please define a config (config.json)");
+            Logger.Log($"{e.Message}\nPlease create a 'config.json' file");
             Console.ReadLine();
-            return;
         }
-
-        var config = JsonConvert.DeserializeObject<ConfigModel>(configFile);
-        if (config == null)
+        catch (JsonException e)
         {
-            Logger.Log("Please define a valid config (config.json)");
+            Logger.Log($"{e.Message}\nPlease make sure your `config.json` file is formatted correctly");
             Console.ReadLine();
-            return;
         }
-
-        Config = config;
-
-        var client = new HypeRateClient(Config.Id, Config.ApiKey);
-        client.Connect();
     }
 }
