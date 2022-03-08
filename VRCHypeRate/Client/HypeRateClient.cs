@@ -1,4 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿using System.Net.Sockets;
+using CoreOSC;
+using CoreOSC.IO;
+using Newtonsoft.Json;
 using VRCHypeRate.Models;
 using WebSocket4Net;
 using ErrorEventArgs = SuperSocket.ClientEngine.ErrorEventArgs;
@@ -11,8 +14,9 @@ public class HypeRateClient
     private readonly string Id;
     private readonly string ApiKey;
     private WebSocket webSocket = null!;
+    private UdpClient oscClient = null!;
     private Timer heartBeatTimer;
-    
+
     public HypeRateClient(string Id, string ApiKey)
     {
         this.Id = Id;
@@ -34,6 +38,7 @@ public class HypeRateClient
         webSocket.Error += WsError;
         webSocket.MessageReceived += WsMessageReceived;
         webSocket.OpenAsync();
+        oscClient = new UdpClient("127.0.0.1", 9000);
         while (true) { }
     }
 
@@ -87,6 +92,7 @@ public class HypeRateClient
     private void handleHrUpdate(HeartRateUpdateModel update)
     {
         var heartRate = update.Payload.HeartRate;
-        Console.WriteLine(heartRate);
+        var message = new OscMessage(new Address("/avatar/parameters/Heartrate"), new object[] { heartRate });
+        oscClient.SendMessageAsync(message);
     }
 }
