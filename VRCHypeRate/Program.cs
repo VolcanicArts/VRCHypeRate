@@ -29,13 +29,11 @@ public static class Program
         }
         catch (FileNotFoundException e)
         {
-            Logger.Log($"{e.Message}\nPlease create a 'config.json' file");
-            Console.ReadLine();
+            Logger.Error($"{e.Message}\nPlease create a 'config.json' file");
         }
         catch (JsonException e)
         {
-            Logger.Log($"{e.Message}\nPlease make sure your `config.json` file is formatted correctly");
-            Console.ReadLine();
+            Logger.Error($"{e.Message}\nPlease make sure your `config.json` file is formatted correctly");
         }
     }
 }
