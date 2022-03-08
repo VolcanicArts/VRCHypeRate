@@ -23,7 +23,7 @@ public class HypeRateClient
     private UdpClient oscClient = null!;
     private Timer heartBeatTimer = null!;
     private bool IsRunning = true;
-    private readonly Logger Logger = Logger.GetLogger(nameof(HypeRateClient));
+    private static readonly Logger Logger = Logger.GetLogger(nameof(HypeRateClient));
 
     public HypeRateClient(string Id, string ApiKey)
     {
