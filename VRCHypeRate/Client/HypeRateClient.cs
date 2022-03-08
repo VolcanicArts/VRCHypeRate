@@ -12,6 +12,9 @@ namespace VRCHypeRate.Client;
 public class HypeRateClient
 {
     private const string URI = "wss://app.hyperate.io/socket/websocket?token=";
+    private const string OSCURI = "127.0.0.1";
+    private const int OSCPort = 9000;
+    
     private readonly string Id;
     private readonly string ApiKey;
     private WebSocket webSocket = null!;
@@ -34,7 +37,7 @@ public class HypeRateClient
 
     private void connect()
     {
-        Logger.Log("Attempting connection");
+        Logger.Log("Attempting to connect to HypeRate websocket");
         var URL = URI + ApiKey;
         webSocket = new WebSocket(URL);
         webSocket.Opened += WsConnected;
@@ -42,7 +45,8 @@ public class HypeRateClient
         webSocket.Error += WsError;
         webSocket.MessageReceived += WsMessageReceived;
         webSocket.OpenAsync();
-        oscClient = new UdpClient("127.0.0.1", 9000);
+        Logger.Log($"Creating OSC client with URI {OSCURI} and port {OSCPort}");
+        oscClient = new UdpClient(OSCURI, OSCPort);
         while (true) { }
     }
 
