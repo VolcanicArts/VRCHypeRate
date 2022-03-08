@@ -12,6 +12,7 @@ public static class Program
 
     public static void Main()
     {
+        Storage.DeleteFile(Logger.LogFilePath);
         setupConfig();
         setupClient();
     }

@@ -3,6 +3,7 @@
 public class Logger
 {
     private const LogLevel LogLevel = Utils.LogLevel.Verbose;
+    public const string LogFilePath = "./runtimelog.txt";
 
     public static Logger GetLogger(string className)
     {
@@ -33,7 +34,9 @@ public class Logger
         var messages = message.Split("\n");
         foreach (var msg in messages)
         {
-            Console.WriteLine($"[{time}] [{logLevel}] [{ClassName}]: {msg}");
+            var logMessage = $"[{time}] [{logLevel}] [{ClassName}]: {msg}";
+            Console.WriteLine(logMessage);
+            Storage.CreateOrAppendFile(LogFilePath, logMessage);
         }
 
         if (logLevel == LogLevel.Error) Console.ReadLine();

@@ -12,4 +12,16 @@ public static class Storage
         if (jsonContents == null) throw new JsonException($"Could not deserialize the file contents into {nameof(T)}");
         return jsonContents;
     }
+
+    public static void DeleteFile(string relativeFilePath)
+    {
+        File.Delete(relativeFilePath);
+    }
+
+    public static void CreateOrAppendFile(string relativeFilePath, string line)
+    {
+        if (!File.Exists(relativeFilePath)) File.Create(relativeFilePath).Close();
+        using var sw = File.AppendText(relativeFilePath);
+        sw.WriteLine(line);
+    }
 }
