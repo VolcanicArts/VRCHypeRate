@@ -94,13 +94,13 @@ public class HypeRateClient
         var heartRate = update.Payload.HeartRate;
         Console.WriteLine($"Received heartrate {heartRate}");
 
-        switch (Program.Config.Mode.ToLower())
+        switch (Program.Config.Mode)
         {
-            case "normalised":
+            case Modes.Normalised:
                 var normalisedHeartRate = (heartRate / 60.0f);
                 sendParameter("Heartrate", normalisedHeartRate);
                 break;
-            case "individual":
+            case Modes.Individual:
                 var individualValues = getIntArray(heartRate);
                 sendParameter("HeartrateOnes", individualValues[2]);
                 sendParameter("HeartrateTens", individualValues[1]);
