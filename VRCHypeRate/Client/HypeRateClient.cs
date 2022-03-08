@@ -90,7 +90,15 @@ public class HypeRateClient
             case "hr_update":
                 handleHrUpdate(JsonConvert.DeserializeObject<HeartRateUpdateModel>(e.Message)!);
                 break;
+            case "phx_reply":
+                handlePhxReply(JsonConvert.DeserializeObject<PhxReplyModel>(e.Message)!);
+                break;
         }
+    }
+
+    private void handlePhxReply(PhxReplyModel reply)
+    {
+        Logger.Log($"Status of reply: {reply.Payload.Status}");
     }
 
     private void handleHrUpdate(HeartRateUpdateModel update)
