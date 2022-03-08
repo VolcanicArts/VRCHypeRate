@@ -38,18 +38,28 @@ public class HypeRateClient
 
     private void connect()
     {
-        Logger.Log("Attempting to connect to HypeRate websocket");
-        var URL = URI + ApiKey;
-        webSocket = new WebSocket(URL);
+        setupWebSocket();
+        setupOscClient();
+        while (IsRunning) { }
+    }
+
+    private void setupWebSocket()
+    {
+        Logger.Log($"Creating websocket\nURI: {URI}\nApiKey: {ApiKey}", LogLevel.Debug);
+        webSocket = new WebSocket(URI + ApiKey);
         webSocket.Opened += WsConnected;
         webSocket.Closed += WsDisconnected;
         webSocket.Error += WsError;
         webSocket.MessageReceived += WsMessageReceived;
+        Logger.Log("Attempting to connect to HypeRate websocket");
         webSocket.OpenAsync();
-        Logger.Log($"Creating OSC client with URI {OSCURI} and port {OSCPort}");
+    }
+
+    private void setupOscClient()
+    {
+        Logger.Log($"Creating OSC client\nURI: {OSCURI}\nPort: {OSCPort}", LogLevel.Debug);
         oscClient = new UdpClient(OSCURI, OSCPort);
         sendParameter("HeartrateEnabled", OscFalse.False);
-        while (IsRunning) { }
     }
 
     private void WsDisconnected(object? sender, EventArgs e)
