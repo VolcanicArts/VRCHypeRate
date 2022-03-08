@@ -1,4 +1,4 @@
-using System.Net;
+﻿using System.Net;
 using System.Net.Sockets;
 using CoreOSC;
 using CoreOSC.IO;
@@ -48,6 +48,7 @@ public class HypeRateClient
         webSocket.OpenAsync();
         Logger.Log($"Creating OSC client with URI {OSCURI} and port {OSCPort}");
         oscClient = new UdpClient(OSCURI, OSCPort);
+        sendParameter("HeartrateEnabled", OscFalse.False);
         while (IsRunning) { }
     }
 
@@ -56,6 +57,7 @@ public class HypeRateClient
         Logger.Log("Websocket has disconnected");
         heartBeatTimer.Dispose();
         IsRunning = false;
+        sendParameter("HeartrateEnabled", OscFalse.False);
     }
 
     private void WsError(object? sender, ErrorEventArgs e)
@@ -68,6 +70,7 @@ public class HypeRateClient
         Logger.Log("Successfully connected!");
         sendJoinChannel();
         initHeartBeat();
+        sendParameter("HeartrateEnabled", OscTrue.True);
     }
 
     private void initHeartBeat()
