@@ -126,7 +126,7 @@ public class HypeRateClient
 
     private void sendParameter(string name, object value)
     {
-        Logger.Log($"Sending parameter {name} of value {value}");
+        Logger.Log($"Sending parameter {name} of value {value}", LogLevel.Debug);
         var message = new OscMessage(new Address($"/avatar/parameters/{name}"), new[] { value });
         oscClient.SendMessageAsync(message);
     }
