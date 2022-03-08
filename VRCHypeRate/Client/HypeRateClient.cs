@@ -38,11 +38,18 @@ public class HypeRateClient
         var URL = URI + ApiKey;
         webSocket = new WebSocket(URL);
         webSocket.Opened += WsConnected;
+        webSocket.Closed += WsDisconnected;
         webSocket.Error += WsError;
         webSocket.MessageReceived += WsMessageReceived;
         webSocket.OpenAsync();
         oscClient = new UdpClient("127.0.0.1", 9000);
         while (true) { }
+    }
+
+    private void WsDisconnected(object? sender, EventArgs e)
+    {
+        Logger.Log("Websocket has disconnected");
+        heartBeatTimer.Dispose();
     }
 
     private void WsError(object? sender, ErrorEventArgs e)
