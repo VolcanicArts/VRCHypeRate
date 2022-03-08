@@ -19,7 +19,7 @@ public class HypeRateClient
     private readonly string ApiKey;
     private WebSocket webSocket = null!;
     private UdpClient oscClient = null!;
-    private Timer heartBeatTimer;
+    private Timer heartBeatTimer = null!;
     private bool IsRunning = true;
 
     private Logger Logger = Logger.GetLogger(nameof(HypeRateClient));
