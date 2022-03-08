@@ -92,7 +92,9 @@ public class HypeRateClient
     private void handleHrUpdate(HeartRateUpdateModel update)
     {
         var heartRate = update.Payload.HeartRate;
+        Console.WriteLine($"Received heartrate {heartRate}");
         var heartRateModified = (heartRate / 60.0f);
+        Console.WriteLine($"Modified {heartRateModified}");
         var message = new OscMessage(new Address("/avatar/parameters/Heartrate"), new object[] { heartRateModified });
         oscClient.SendMessageAsync(message);
     }
