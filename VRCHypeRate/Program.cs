@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using VRCHypeRate.Client;
 using VRCHypeRate.Models;
 using VRCHypeRate.Utils;
@@ -11,7 +11,7 @@ public static class Program
     public static ConfigModel Config = null!;
     public static void Main()
     {
-        var configFile = string.Empty;
+        string configFile;
         try
         {
             configFile = File.ReadAllText("./config.json");
