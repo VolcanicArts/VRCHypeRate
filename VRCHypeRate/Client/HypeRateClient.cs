@@ -15,6 +15,7 @@ public class HypeRateClient
     private const string URI = "wss://app.hyperate.io/socket/websocket?token=";
     private static readonly string OSCURI = IPAddress.Loopback.ToString();
     private const int OSCPort = 9000;
+    private const int HeartbeatInternal = 30000;
     
     private readonly string Id;
     private readonly string ApiKey;
@@ -72,7 +73,7 @@ public class HypeRateClient
 
     private void initHeartBeat()
     {
-        heartBeatTimer = new Timer(sendHeartBeat, null, 30000, Timeout.Infinite);
+        heartBeatTimer = new Timer(sendHeartBeat, null, HeartbeatInternal, Timeout.Infinite);
     }
 
     private void sendHeartBeat(object? _)
@@ -80,6 +81,7 @@ public class HypeRateClient
         Logger.Log("Sending heartbeat to websocket");
         var heartBeatModel = new WebSocketHeartBeatModel();
         webSocket.Send(JsonConvert.SerializeObject(heartBeatModel));
+        heartBeatTimer.Change(HeartbeatInternal, Timeout.Infinite);
     }
 
     private void sendJoinChannel()
