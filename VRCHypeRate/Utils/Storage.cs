@@ -18,6 +18,11 @@ public static class Storage
         File.Delete(relativeFilePath);
     }
 
+    public static void CreateOrAppendFile(string relativeFilePath, List<string> lines)
+    {
+        lines.ForEach(line => CreateOrAppendFile(relativeFilePath, line));
+    }
+
     public static void CreateOrAppendFile(string relativeFilePath, string line)
     {
         if (!File.Exists(relativeFilePath)) File.Create(relativeFilePath).Close();

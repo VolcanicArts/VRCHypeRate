@@ -19,27 +19,32 @@ public class Logger
 
     public void Error(string message)
     {
-        log(message, LogLevel.Error);
+        logToFile(message, LogLevel.Error);
+        logToConsole(message, LogLevel.Error);
     }
 
     public void Log(string message, LogLevel logLevel = LogLevel.Verbose)
     {
+        logToFile(message, logLevel);
         if (logLevel < LogLevel) return;
-        log(message, logLevel);
+        logToConsole(message, logLevel);
     }
 
-    private void log(string message, LogLevel logLevel)
+    private void logToConsole(string message, LogLevel logLevel)
+    {
+        createFormattedLogMessages(message, logLevel).ForEach(Console.WriteLine);
+        if (logLevel == LogLevel.Error) Console.ReadLine();
+    }
+
+    private void logToFile(string message, LogLevel logLevel)
+    {
+        Storage.CreateOrAppendFile(LogFilePath, createFormattedLogMessages(message, logLevel));
+    }
+
+    private List<string> createFormattedLogMessages(string message, LogLevel logLevel)
     {
         var time = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-        var messages = message.Split("\n");
-        foreach (var msg in messages)
-        {
-            var logMessage = $"[{time}] [{logLevel}] [{ClassName}]: {msg}";
-            Console.WriteLine(logMessage);
-            Storage.CreateOrAppendFile(LogFilePath, logMessage);
-        }
-
-        if (logLevel == LogLevel.Error) Console.ReadLine();
+        return message.Split("\n").Select(msg => $"[{time}] [{logLevel}] [{ClassName}]: {msg}").ToList();
     }
 }
 
