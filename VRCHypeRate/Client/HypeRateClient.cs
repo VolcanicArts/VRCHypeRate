@@ -94,7 +94,7 @@ public class HypeRateClient
         var heartRate = update.Payload.HeartRate;
         Console.WriteLine($"Received heartrate {heartRate}");
 
-        switch (Program.Config.Mode)
+        switch (Program.Config.Mode.ToLower())
         {
             case "normalised":
                 var normalisedHeartRate = (heartRate / 60.0f);
