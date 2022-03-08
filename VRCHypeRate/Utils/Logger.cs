@@ -1,49 +1,37 @@
-﻿namespace VRCHypeRate.Utils;
+﻿using System.Diagnostics;
 
-public class Logger
+namespace VRCHypeRate.Utils;
+
+public static class Logger
 {
     private const LogLevel LogLevel = Utils.LogLevel.Verbose;
     public const string LogFilePath = "./runtimelog.txt";
 
-    public static Logger GetLogger(string className)
-    {
-        return new Logger(className);
-    }
-
-    private readonly string ClassName;
-
-    private Logger(string className)
-    {
-        ClassName = className;
-    }
-
-    public void Error(string message)
+    public static void Error(string message)
     {
         Log(message, LogLevel.Error);
     }
-
-    public void Log(string message, LogLevel logLevel = LogLevel.Verbose)
+    
+    public static void Log(string message, LogLevel logLevel = LogLevel.Verbose)
     {
-        logToFile(message, logLevel);
+        var className = getClassName() ?? "Unknown";
+        var logMessages = createFormattedLogMessages(message, className, logLevel);
+        
+        Storage.CreateOrAppendFile(LogFilePath, logMessages);
         if (logLevel < LogLevel) return;
-        logToConsole(message, logLevel);
-    }
-
-    private void logToConsole(string message, LogLevel logLevel)
-    {
-        createFormattedLogMessages(message, logLevel).ForEach(Console.WriteLine);
+        logMessages.ForEach(Console.WriteLine);
         if (logLevel == LogLevel.Error) Console.ReadLine();
     }
 
-    private void logToFile(string message, LogLevel logLevel)
+    private static string? getClassName()
     {
-        Storage.CreateOrAppendFile(LogFilePath, createFormattedLogMessages(message, logLevel));
+        return new StackTrace().GetFrame(2)?.GetMethod()?.ReflectedType?.Name;
     }
 
-    private List<string> createFormattedLogMessages(string message, LogLevel logLevel)
+    private static List<string> createFormattedLogMessages(string message, string? className, LogLevel logLevel)
     {
         var time = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-        return message.Split("\n").Select(msg => $"[{time}] [{logLevel}] [{ClassName}]: {msg}").ToList();
+        return message.Split("\n").Select(msg => $"[{time}] [{logLevel}] [{className}]: {msg}").ToList();
     }
 }
 

@@ -7,7 +7,6 @@ namespace VRCHypeRate;
 
 public static class Program
 {
-    private static readonly Logger Logger = Logger.GetLogger("VRCHypeRate");
     internal static ConfigModel Config = null!;
 
     public static void Main()
