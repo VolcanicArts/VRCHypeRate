@@ -93,9 +93,35 @@ public class HypeRateClient
     {
         var heartRate = update.Payload.HeartRate;
         Console.WriteLine($"Received heartrate {heartRate}");
-        var heartRateModified = (heartRate / 60.0f);
-        Console.WriteLine($"Modified {heartRateModified}");
-        var message = new OscMessage(new Address("/avatar/parameters/Heartrate"), new object[] { heartRateModified });
+
+        switch (Program.Config.Mode)
+        {
+            case "normalised":
+                var normalisedHeartRate = (heartRate / 60.0f);
+                sendParameter("Heartrate", normalisedHeartRate);
+                break;
+            case "individual":
+                var individualValues = getIntArray(heartRate);
+                sendParameter("HeartrateOnes", individualValues[2]);
+                sendParameter("HeartrateTens", individualValues[1]);
+                sendParameter("HeartrateHundreds", individualValues[0]);
+                break;
+            default:
+                Console.WriteLine("Invalid mode defined");
+                break;
+        }
+    }
+
+    private void sendParameter(string name, object value)
+    {
+        var message = new OscMessage(new Address($"/avatar/parameters/{name}"), new[] { value });
         oscClient.SendMessageAsync(message);
+    }
+
+    private static int[] getIntArray(int num)
+    {
+        var numStr = num.ToString().PadLeft(3, '0');
+        var intList = numStr.Select(digit => int.Parse(digit.ToString()));
+        return intList.ToArray();
     }
 }

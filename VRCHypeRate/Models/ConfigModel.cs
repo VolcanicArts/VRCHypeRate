@@ -9,4 +9,7 @@ public class ConfigModel
 
     [JsonProperty("apikey")]
     public string ApiKey;
+
+    [JsonProperty("mode")]
+    public string Mode;
 }

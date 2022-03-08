@@ -6,10 +6,11 @@ namespace VRCHypeRate;
 
 public static class Program
 {
+    public static ConfigModel Config;
     public static void Main()
     {
-        var config = JsonConvert.DeserializeObject<ConfigModel>(File.ReadAllText("./config.json"))!;
-        var client = new HypeRateClient(config.Id, config.ApiKey);
+        Config = JsonConvert.DeserializeObject<ConfigModel>(File.ReadAllText("./config.json"))!;
+        var client = new HypeRateClient(Config.Id, Config.ApiKey);
         client.Connect();
     }
 }
