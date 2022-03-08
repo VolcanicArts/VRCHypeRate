@@ -11,5 +11,5 @@ public class PhxReplyModel
 public class PhxReplyPayload
 {
     [JsonProperty("status")]
-    public string Status;
+    public string Status = null!;
 }
