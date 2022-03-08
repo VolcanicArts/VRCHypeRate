@@ -1,4 +1,4 @@
-﻿using System.Net;
+using System.Net;
 using System.Net.Sockets;
 using CoreOSC;
 using CoreOSC.IO;
@@ -78,8 +78,7 @@ public class HypeRateClient
     private void sendHeartBeat(object? _)
     {
         Logger.Log("Sending heartbeat to websocket");
-        var heartBeatModel = new WebSocketHeartBeatModel();
-        webSocket.Send(JsonConvert.SerializeObject(heartBeatModel));
+        webSocket.Send(JsonConvert.SerializeObject(new WebSocketHeartBeatModel()));
         heartBeatTimer.Change(HeartbeatInternal, Timeout.Infinite);
     }
 
