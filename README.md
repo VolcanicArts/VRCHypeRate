@@ -29,3 +29,6 @@ This mode is meant for users that want to display their heartrate as a number. T
 `HeartrateTens`
 `HeartrateHundreds`
 To use this mode, type `individual` into the `mode` field of your config.
+
+## State
+`HeartrateEnabled` is an OSC boolean that gets toggled between true/false based on whether the program is running and connected to the HypeRate websocket. You can use this to toggle your heartrate object in Unity on/off
