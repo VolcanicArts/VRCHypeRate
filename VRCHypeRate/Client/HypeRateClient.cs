@@ -139,17 +139,10 @@ public class HypeRateClient
         
         var normalisedHeartRate = (heartRate / 60.0f);
         oscClient.sendParameter(OSCParameter.HeartrateNormalised, normalisedHeartRate);
-        
-        var individualValues = getIntArray(heartRate);
+
+        var individualValues = heartRate.ToDigitArray(3);
         oscClient.sendParameter(OSCParameter.HeartrateOnes, individualValues[2]);
         oscClient.sendParameter(OSCParameter.HeartrateTens, individualValues[1]);
         oscClient.sendParameter(OSCParameter.HeartrateHundreds, individualValues[0]);
-    }
-
-    private static int[] getIntArray(int num)
-    {
-        var numStr = num.ToString().PadLeft(3, '0');
-        var intList = numStr.Select(digit => int.Parse(digit.ToString()));
-        return intList.ToArray();
     }
 }
