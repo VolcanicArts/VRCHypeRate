@@ -10,9 +10,4 @@ public static class PrimitiveExtensions
         var intList = numStr.Select(digit => int.Parse(digit.ToString()));
         return intList.ToArray();
     }
-
-    public static object ToOscBoolean(this bool value)
-    {
-        return value ? OscTrue.True : OscFalse.False;
-    }
 }

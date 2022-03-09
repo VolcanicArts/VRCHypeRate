@@ -2,7 +2,7 @@
 
 namespace VRCHypeRate.Models;
 
-public class WebSocketHeartBeatModel
+public class WebSocketHeartBeatSendableModel : ISendableModel
 {
     [JsonProperty("topic")]
     private string Topic = "phoenix";

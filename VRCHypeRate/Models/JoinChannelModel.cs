@@ -2,7 +2,7 @@
 
 namespace VRCHypeRate.Models;
 
-public class JoinChannelModel
+public class JoinChannelSendableModel : ISendableModel
 {
     [JsonProperty("topic")]
     private string topic = null!;
