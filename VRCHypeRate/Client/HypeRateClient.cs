@@ -58,7 +58,7 @@ public class HypeRateClient
     {
         Logger.Log($"Creating OSC client\nURI: {OSCURI}\nPort: {OSCPort}", LogLevel.Debug);
         oscClient = new UdpClient(OSCURI, OSCPort);
-        sendParameter("HeartrateEnabled", OscFalse.False);
+        sendParameter(OSCParameter.HeartrateEnabled, OscFalse.False);
     }
 
     private void WsDisconnected(object? sender, EventArgs e)
@@ -66,7 +66,7 @@ public class HypeRateClient
         Logger.Log("Websocket has disconnected");
         heartBeatTimer.Dispose();
         IsRunning = false;
-        sendParameter("HeartrateEnabled", OscFalse.False);
+        sendParameter(OSCParameter.HeartrateEnabled, OscFalse.False);
     }
 
     private void WsError(object? sender, ErrorEventArgs e)
@@ -79,7 +79,7 @@ public class HypeRateClient
         Logger.Log("Successfully connected!");
         sendJoinChannel();
         initHeartBeat();
-        sendParameter("HeartrateEnabled", OscTrue.True);
+        sendParameter(OSCParameter.HeartrateEnabled, OscTrue.True);
     }
 
     private void initHeartBeat()
@@ -135,21 +135,21 @@ public class HypeRateClient
         var heartRate = update.Payload.HeartRate;
         Logger.Log($"Received heartrate {heartRate}");
         
-        sendParameter("HeartrateEnabled", OscTrue.True);
+        sendParameter(OSCParameter.HeartrateEnabled, OscTrue.True);
         
         var normalisedHeartRate = (heartRate / 60.0f);
-        sendParameter("HeartrateNormalised", normalisedHeartRate);
+        sendParameter(OSCParameter.HeartrateNormalised, normalisedHeartRate);
         
         var individualValues = getIntArray(heartRate);
-        sendParameter("HeartrateOnes", individualValues[2]);
-        sendParameter("HeartrateTens", individualValues[1]);
-        sendParameter("HeartrateHundreds", individualValues[0]);
+        sendParameter(OSCParameter.HeartrateOnes, individualValues[2]);
+        sendParameter(OSCParameter.HeartrateTens, individualValues[1]);
+        sendParameter(OSCParameter.HeartrateHundreds, individualValues[0]);
     }
  
-    private void sendParameter(string name, object value)
+    private void sendParameter(OSCParameter parameter, object value)
     {
-        Logger.Log($"Sending parameter {name} of value {value}", LogLevel.Debug);
-        var message = new OscMessage(new Address($"/avatar/parameters/{name}"), new[] { value });
+        Logger.Log($"Sending parameter {parameter.ToString()} of value {value}", LogLevel.Debug);
+        var message = new OscMessage(new Address($"/avatar/parameters/{parameter.ToString()}"), new[] { value });
         oscClient.SendMessageAsync(message);
     }
 
