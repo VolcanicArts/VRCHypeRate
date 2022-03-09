@@ -1,4 +1,6 @@
-﻿namespace VRCHypeRate.Client;
+﻿using CoreOSC;
+
+namespace VRCHypeRate.Client;
 
 public enum OSCParameter
 {
@@ -7,4 +9,12 @@ public enum OSCParameter
     HeartrateOnes,
     HeartrateTens,
     HeartrateHundreds
+}
+
+public static class OSCParameterExtensions
+{
+    public static Address GetOscAddress(this OSCParameter parameter)
+    {
+        return new Address($"/avatar/parameters/{parameter.ToString()}");
+    }
 }
