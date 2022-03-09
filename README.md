@@ -1,34 +1,27 @@
 # VRCHypeRate
 
-A simple OSC implementation for taking HypeRate.io and sending it into VRChat.
+A simple implementation for taking HypeRate.io heartrate values and sending them into VRChat over OSC.
+
+## Setup
+Download the latest release from the [Release](https://github.com/VolcanicArts/VRCHypeRate/releases/latest) page.
 
 You will need a HypeRate API key to use this project, and you can request one in their [Discord](https://discord.gg/eTwfgU29cU) server.
 
-Next, create a config file where the code has been complied into an executable. Example:
+Create a config file where `VRCHypeRate.exe` is located and fill in the information accordingly:
 ```json
 {
 	"id": "",
-	"apikey": "",
-	"mode": ""
+	"apikey": ""
 }
 ```
-`id` being your HypeRate ID, and `apikey` being your API key. Mode is explained below
 
-## Modes
-`normalised`
+## Parameters
 
-If you'd like to use this, create an animation in Unity that lasts 1 second, this represents a single heartbeat.
-Have a paramater on your avatar called `Heartrate`. This is the heartrate normalised to 1, where 1 is 60bpm.
-Assign that parameter to the speed of your animation. Now the animation will play at default speed when your heartrate is 60bpm.
-To use this mode, type `normalised` into the `mode` field of your config.
+`HeartrateNormalised` is the heartrate normalised to a value of `1` when your BPM is `60`. This is meant for use as an animation speed adjustment.
 
-`individual`
+`HeartrateOnes`, `HeartrateTens`, `HeartrateHundreds` are values between 0 and 9 and are meant for use of changing material overrides to the correct number to display your heartrate.
 
-This mode is meant for users that want to display their heartrate as a number. This requires more effort as you will need material animations to switch digits. The parameter names are:
-`HeartrateOnes`
-`HeartrateTens`
-`HeartrateHundreds`
-To use this mode, type `individual` into the `mode` field of your config.
+`HeartrateEnabled` is `true` whenever the websocket is connected and heartrate values are being sent, and is `false` if the websocket fails to connect or disconnects.
 
-## State
-`HeartrateEnabled` is an OSC boolean that gets toggled between true/false based on whether the program is running and connected to the HypeRate websocket. You can use this to toggle your heartrate object in Unity on/off
+## License
+This app is licenced under the [GNU General Public License V3](https://www.gnu.org/licenses/gpl-3.0.en.html). Please see [the license file](LICENSE) for more information.
