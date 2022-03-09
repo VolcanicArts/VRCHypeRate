@@ -7,7 +7,7 @@ namespace VRCHypeRate.Utils;
 
 public static class OscExtensions
 {
-    public static void sendParameter(this UdpClient oscClient, OSCParameter parameter, object value)
+    public static void SendParameter(this UdpClient oscClient, OSCParameter parameter, object value)
     {
         Logger.Log($"Sending parameter {parameter.ToString()} of value {value}", LogLevel.Debug);
         var message = new OscMessage(new Address($"/avatar/parameters/{parameter.ToString()}"), new[] { value });

@@ -1,7 +1,6 @@
 ﻿using System.Net;
 using System.Net.Sockets;
 using CoreOSC;
-using CoreOSC.IO;
 using Newtonsoft.Json;
 using VRCHypeRate.Models;
 using VRCHypeRate.Utils;
@@ -16,7 +15,7 @@ public class HypeRateClient
     private static readonly string OSCURI = IPAddress.Loopback.ToString();
     private const int OSCPort = 9000;
     private const int HeartbeatInternal = 30000;
-    
+
     private readonly string Id;
     private readonly string ApiKey;
     private WebSocket webSocket = null!;
@@ -58,7 +57,7 @@ public class HypeRateClient
     {
         Logger.Log($"Creating OSC client\nURI: {OSCURI}\nPort: {OSCPort}", LogLevel.Debug);
         oscClient = new UdpClient(OSCURI, OSCPort);
-        oscClient.sendParameter(OSCParameter.HeartrateEnabled, OscFalse.False);
+        oscClient.SendParameter(OSCParameter.HeartrateEnabled, OscFalse.False);
     }
 
     private void WsDisconnected(object? sender, EventArgs e)
@@ -66,10 +65,10 @@ public class HypeRateClient
         Logger.Log("Websocket has disconnected");
         heartBeatTimer.Dispose();
         IsRunning = false;
-        oscClient.sendParameter(OSCParameter.HeartrateEnabled, OscFalse.False);
+        oscClient.SendParameter(OSCParameter.HeartrateEnabled, OscFalse.False);
     }
 
-    private void WsError(object? sender, ErrorEventArgs e)
+    private static void WsError(object? sender, ErrorEventArgs e)
     {
         Logger.Log(e.Exception.ToString());
     }
@@ -79,7 +78,7 @@ public class HypeRateClient
         Logger.Log("Successfully connected!");
         sendJoinChannel();
         initHeartBeat();
-        oscClient.sendParameter(OSCParameter.HeartrateEnabled, OscTrue.True);
+        oscClient.SendParameter(OSCParameter.HeartrateEnabled, OscTrue.True);
     }
 
     private void initHeartBeat()
@@ -125,7 +124,7 @@ public class HypeRateClient
         }
     }
 
-    private void handlePhxReply(PhxReplyModel reply)
+    private static void handlePhxReply(PhxReplyModel reply)
     {
         Logger.Log($"Status of reply: {reply.Payload.Status}");
     }
@@ -134,15 +133,15 @@ public class HypeRateClient
     {
         var heartRate = update.Payload.HeartRate;
         Logger.Log($"Received heartrate {heartRate}");
-        
-        oscClient.sendParameter(OSCParameter.HeartrateEnabled, OscTrue.True);
-        
+
+        oscClient.SendParameter(OSCParameter.HeartrateEnabled, OscTrue.True);
+
         var normalisedHeartRate = (heartRate / 60.0f);
-        oscClient.sendParameter(OSCParameter.HeartrateNormalised, normalisedHeartRate);
+        oscClient.SendParameter(OSCParameter.HeartrateNormalised, normalisedHeartRate);
 
         var individualValues = heartRate.ToDigitArray(3);
-        oscClient.sendParameter(OSCParameter.HeartrateOnes, individualValues[2]);
-        oscClient.sendParameter(OSCParameter.HeartrateTens, individualValues[1]);
-        oscClient.sendParameter(OSCParameter.HeartrateHundreds, individualValues[0]);
+        oscClient.SendParameter(OSCParameter.HeartrateOnes, individualValues[2]);
+        oscClient.SendParameter(OSCParameter.HeartrateTens, individualValues[1]);
+        oscClient.SendParameter(OSCParameter.HeartrateHundreds, individualValues[0]);
     }
 }

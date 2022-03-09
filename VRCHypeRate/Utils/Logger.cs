@@ -11,12 +11,12 @@ public static class Logger
     {
         Log(message, LogLevel.Error);
     }
-    
+
     public static void Log(string message, LogLevel logLevel = LogLevel.Verbose)
     {
         var className = getClassName() ?? "Unknown";
         var logMessages = createFormattedLogMessages(message, className, logLevel);
-        
+
         Storage.CreateOrAppendFile(LogFilePath, logMessages);
         if (logLevel < LogLevel) return;
         logMessages.ForEach(Console.WriteLine);
