@@ -20,7 +20,9 @@ public static class Storage
 
     public static void CreateOrAppendFile(string relativeFilePath, List<string> lines)
     {
-        lines.ForEach(line => CreateOrAppendFile(relativeFilePath, line));
+        if (!File.Exists(relativeFilePath)) File.Create(relativeFilePath).Close();
+        using var sw = File.AppendText(relativeFilePath);
+        lines.ForEach(line => sw.WriteLine(line));
     }
 
     public static void CreateOrAppendFile(string relativeFilePath, string line)
