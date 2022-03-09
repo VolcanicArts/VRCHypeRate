@@ -13,7 +13,7 @@ public abstract class BaseHeartRateProvider
     public Action<int>? OnHeartRateUpdate;
 
     private readonly WebSocket WebSocket;
-    private bool IsRunning = true;
+    private readonly EventWaitHandle IsRunning = new AutoResetEvent(false);
 
     protected BaseHeartRateProvider(string Uri)
     {
@@ -27,7 +27,7 @@ public abstract class BaseHeartRateProvider
 
     public void Connect()
     {
-        new Thread(run).Start();
+        Task.Factory.StartNew(run).Wait();
     }
 
     protected void Send(ISendableModel data)
@@ -37,8 +37,8 @@ public abstract class BaseHeartRateProvider
 
     private void run()
     {
-        WebSocket.OpenAsync();
-        while (IsRunning) { }
+        WebSocket.Open();
+        IsRunning.WaitOne();
     }
 
     protected virtual void WsConnected(object? sender, EventArgs e)
@@ -51,7 +51,7 @@ public abstract class BaseHeartRateProvider
     {
         Logger.Log("WebSocket disconnected", LogLevel.Debug);
         OnDisconnected?.Invoke();
-        IsRunning = false;
+        IsRunning.Set();
     }
 
     protected virtual void WsMessageReceived(object? sender, MessageReceivedEventArgs e)

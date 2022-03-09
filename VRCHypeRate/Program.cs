@@ -19,6 +19,7 @@ public static class Program
     private static void setupClient()
     {
         new OscClient(new HypeRateProvider(Config.Id, Config.ApiKey)).Start();
+        Console.ReadKey(true);
     }
 
     private static void setupConfig()
