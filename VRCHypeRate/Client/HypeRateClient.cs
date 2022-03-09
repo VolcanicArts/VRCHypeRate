@@ -43,7 +43,7 @@ public class HypeRateClient
 
     private void setupWebSocket()
     {
-        Logger.Log($"Creating websocket\nURI: {URI}\nApiKey: {ApiKey}", LogLevel.Debug);
+        Logger.Log($"Creating websocket\nURI: {URI}", LogLevel.Debug);
         webSocket = new WebSocket(URI + ApiKey);
         webSocket.Opened += WsConnected;
         webSocket.Closed += WsDisconnected;
