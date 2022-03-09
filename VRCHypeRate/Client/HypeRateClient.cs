@@ -57,7 +57,7 @@ public class HypeRateClient
     {
         Logger.Log($"Creating OSC client\nURI: {OSCURI}\nPort: {OSCPort}", LogLevel.Debug);
         oscClient = new UdpClient(OSCURI, OSCPort);
-        oscClient.SendParameter(OSCParameter.HeartrateEnabled, OscFalse.False);
+        oscClient.SendParameter(OSCParameter.HeartrateEnabled, false);
     }
 
     private void WsDisconnected(object? sender, EventArgs e)
@@ -65,7 +65,7 @@ public class HypeRateClient
         Logger.Log("Websocket has disconnected");
         heartBeatTimer.Dispose();
         IsRunning = false;
-        oscClient.SendParameter(OSCParameter.HeartrateEnabled, OscFalse.False);
+        oscClient.SendParameter(OSCParameter.HeartrateEnabled, false);
     }
 
     private static void WsError(object? sender, ErrorEventArgs e)
@@ -78,7 +78,7 @@ public class HypeRateClient
         Logger.Log("Successfully connected!");
         sendJoinChannel();
         initHeartBeat();
-        oscClient.SendParameter(OSCParameter.HeartrateEnabled, OscTrue.True);
+        oscClient.SendParameter(OSCParameter.HeartrateEnabled, true);
     }
 
     private void initHeartBeat()
@@ -134,7 +134,7 @@ public class HypeRateClient
         var heartRate = update.Payload.HeartRate;
         Logger.Log($"Received heartrate {heartRate}");
 
-        oscClient.SendParameter(OSCParameter.HeartrateEnabled, OscTrue.True);
+        oscClient.SendParameter(OSCParameter.HeartrateEnabled, true);
 
         var normalisedHeartRate = (heartRate / 60.0f);
         oscClient.SendParameter(OSCParameter.HeartrateNormalised, normalisedHeartRate);
