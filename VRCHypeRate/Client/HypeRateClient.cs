@@ -134,25 +134,18 @@ public class HypeRateClient
     {
         var heartRate = update.Payload.HeartRate;
         Logger.Log($"Received heartrate {heartRate}");
-
-        switch (Program.Config.Mode)
-        {
-            case Modes.Normalised:
-                var normalisedHeartRate = (heartRate / 60.0f);
-                sendParameter("Heartrate", normalisedHeartRate);
-                break;
-            case Modes.Individual:
-                var individualValues = getIntArray(heartRate);
-                sendParameter("HeartrateOnes", individualValues[2]);
-                sendParameter("HeartrateTens", individualValues[1]);
-                sendParameter("HeartrateHundreds", individualValues[0]);
-                break;
-            default:
-                Logger.Log("Invalid mode defined");
-                break;
-        }
+        
+        sendParameter("HeartrateEnabled", OscTrue.True);
+        
+        var normalisedHeartRate = (heartRate / 60.0f);
+        sendParameter("HeartrateNormalised", normalisedHeartRate);
+        
+        var individualValues = getIntArray(heartRate);
+        sendParameter("HeartrateOnes", individualValues[2]);
+        sendParameter("HeartrateTens", individualValues[1]);
+        sendParameter("HeartrateHundreds", individualValues[0]);
     }
-
+ 
     private void sendParameter(string name, object value)
     {
         Logger.Log($"Sending parameter {name} of value {value}", LogLevel.Debug);

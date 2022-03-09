@@ -7,7 +7,7 @@ namespace VRCHypeRate;
 
 public static class Program
 {
-    internal static ConfigModel Config = null!;
+    private static ConfigModel Config = null!;
 
     public static void Main()
     {

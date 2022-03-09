@@ -9,13 +9,4 @@ public class ConfigModel
 
     [JsonProperty("apikey")]
     public string ApiKey;
-
-    [JsonProperty("mode")]
-    public Modes Mode;
-}
-
-public enum Modes
-{
-    Normalised,
-    Individual
 }
