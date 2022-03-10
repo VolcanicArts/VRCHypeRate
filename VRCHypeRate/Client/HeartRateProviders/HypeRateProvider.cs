@@ -17,39 +17,35 @@ public class HypeRateProvider : BaseHeartRateProvider
         this.Id = Id;
     }
 
-    protected override void WsConnected(object? sender, EventArgs e)
+    protected override void OnWsConnected()
     {
-        base.WsConnected(sender, e);
         Logger.Log("Successfully connected to the HypeRate websocket");
         sendJoinChannel();
         initHeartBeat();
     }
 
-    protected override void WsDisconnected(object? sender, EventArgs e)
+    protected override void OnWsDisconnected()
     {
-        base.WsDisconnected(sender, e);
         Logger.Log("Disconnected from the HypeRate websocket");
         heartBeatTimer?.Dispose();
     }
 
-    protected override void WsMessageReceived(object? sender, MessageReceivedEventArgs e)
+    protected override void OnWsMessageReceived(string message)
     {
-        base.WsMessageReceived(sender, e);
-
-        var eventModel = JsonConvert.DeserializeObject<EventModel>(e.Message);
+        var eventModel = JsonConvert.DeserializeObject<EventModel>(message);
         if (eventModel == null)
         {
-            Logger.Log($"Received an unrecognised message:\n{e.Message}");
+            Logger.Log($"Received an unrecognised message:\n{message}");
             return;
         }
 
         switch (eventModel.Event)
         {
             case "hr_update":
-                handleHrUpdate(JsonConvert.DeserializeObject<HeartRateUpdateModel>(e.Message)!);
+                handleHrUpdate(JsonConvert.DeserializeObject<HeartRateUpdateModel>(message)!);
                 break;
             case "phx_reply":
-                handlePhxReply(JsonConvert.DeserializeObject<PhxReplyModel>(e.Message)!);
+                handlePhxReply(JsonConvert.DeserializeObject<PhxReplyModel>(message)!);
                 break;
         }
     }

@@ -19,6 +19,7 @@ public static class Program
     private static void setupClient()
     {
         new OscClient(new HypeRateProvider(Config.Id, Config.ApiKey)).Start();
+        Logger.Log("Press any key to close the program");
         Console.ReadKey(true);
     }
 

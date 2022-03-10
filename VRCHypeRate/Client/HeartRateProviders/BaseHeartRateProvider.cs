@@ -41,23 +41,32 @@ public abstract class BaseHeartRateProvider
         IsRunning.WaitOne();
     }
 
-    protected virtual void WsConnected(object? sender, EventArgs e)
+    private void WsConnected(object? sender, EventArgs e)
     {
         Logger.Log("WebSocket successfully connected", LogLevel.Debug);
         OnConnected?.Invoke();
+        OnWsConnected();
     }
 
-    protected virtual void WsDisconnected(object? sender, EventArgs e)
+    protected abstract void OnWsConnected();
+
+    private void WsDisconnected(object? sender, EventArgs e)
     {
         Logger.Log("WebSocket disconnected", LogLevel.Debug);
         OnDisconnected?.Invoke();
+        OnWsDisconnected();
         IsRunning.Set();
     }
 
-    protected virtual void WsMessageReceived(object? sender, MessageReceivedEventArgs e)
+    protected abstract void OnWsDisconnected();
+
+    private void WsMessageReceived(object? sender, MessageReceivedEventArgs e)
     {
         Logger.Log(e.Message, LogLevel.Debug);
+        OnWsMessageReceived(e.Message);
     }
+
+    protected abstract void OnWsMessageReceived(string message);
 
     private static void WsError(object? sender, ErrorEventArgs e)
     {
