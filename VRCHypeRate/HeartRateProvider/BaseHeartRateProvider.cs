@@ -69,6 +69,6 @@ public abstract class BaseHeartRateProvider
 
     private static void WsError(object? sender, ErrorEventArgs e)
     {
-        Logger.Log(e.Exception.ToString(), LogLevel.Error);
+        Logger.Error(e.Exception.ToString());
     }
 }
