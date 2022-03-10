@@ -4,7 +4,7 @@ namespace VRCHypeRate.Utils;
 
 public static class Logger
 {
-    private const LogLevel LogLevel = Utils.LogLevel.Verbose;
+    private const LogLevel DefaultLogLevel = 0;
     public const string LogFilePath = "./runtimelog.txt";
 
     public static void Error(string message)
@@ -12,13 +12,13 @@ public static class Logger
         Log(message, LogLevel.Error);
     }
 
-    public static void Log(string message, LogLevel logLevel = LogLevel.Verbose)
+    public static void Log(string message, LogLevel logLevel = DefaultLogLevel)
     {
         var className = getClassName() ?? "Unknown";
         var logMessages = createFormattedLogMessages(message, className, logLevel);
 
         Storage.CreateOrAppendFile(LogFilePath, logMessages);
-        if (logLevel < LogLevel) return;
+        if (logLevel < DefaultLogLevel) return;
         logMessages.ForEach(Console.WriteLine);
         if (logLevel == LogLevel.Error) Console.ReadLine();
     }
@@ -38,7 +38,7 @@ public static class Logger
 
 public enum LogLevel
 {
-    Debug = 0,
-    Verbose = 1,
-    Error = 2
+    Debug = -1,
+    Verbose = 0,
+    Error = 1
 }
