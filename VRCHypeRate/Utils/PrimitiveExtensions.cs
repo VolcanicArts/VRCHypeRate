@@ -1,6 +1,4 @@
-﻿using CoreOSC;
-
-namespace VRCHypeRate.Utils;
+﻿namespace VRCHypeRate.Utils;
 
 public static class PrimitiveExtensions
 {

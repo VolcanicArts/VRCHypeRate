@@ -8,12 +8,12 @@ namespace VRCHypeRate.Client;
 
 public abstract class BaseHeartRateProvider
 {
+    private readonly EventWaitHandle IsRunning = new AutoResetEvent(false);
+
+    private readonly WebSocket WebSocket;
     public Action? OnConnected;
     public Action? OnDisconnected;
     public Action<int>? OnHeartRateUpdate;
-
-    private readonly WebSocket WebSocket;
-    private readonly EventWaitHandle IsRunning = new AutoResetEvent(false);
 
     protected BaseHeartRateProvider(string Uri)
     {

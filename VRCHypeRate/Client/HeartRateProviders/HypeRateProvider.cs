@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 using VRCHypeRate.Models;
 using VRCHypeRate.Utils;
-using WebSocket4Net;
 
 namespace VRCHypeRate.Client;
 

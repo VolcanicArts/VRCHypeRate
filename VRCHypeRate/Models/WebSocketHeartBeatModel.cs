@@ -4,9 +4,6 @@ namespace VRCHypeRate.Models;
 
 public class WebSocketHeartBeatSendableModel : ISendableModel
 {
-    [JsonProperty("topic")]
-    private string Topic = "phoenix";
-
     [JsonProperty("event")]
     private string Event = "heartbeat";
 
@@ -15,6 +12,9 @@ public class WebSocketHeartBeatSendableModel : ISendableModel
 
     [JsonProperty("ref")]
     private int Ref;
+
+    [JsonProperty("topic")]
+    private string Topic = "phoenix";
 }
 
 public class WebSocketHeartBeatPayload { }

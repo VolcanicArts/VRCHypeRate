@@ -31,7 +31,7 @@ public static class Logger
     private static List<string> createFormattedLogMessages(string message, string? className, LogLevel logLevel)
     {
         var time = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-        var maxLength = (Enum.GetValues(typeof(LogLevel)).Cast<LogLevel>().Select(logLevelName => logLevelName.ToString().Length)).Prepend(0).Max();
+        var maxLength = Enum.GetValues(typeof(LogLevel)).Cast<LogLevel>().Select(logLevelName => logLevelName.ToString().Length).Prepend(0).Max();
         return message.Split("\n").Select(msg => $"[{time}] [{logLevel.ToString().PadRight(maxLength)}] [{className}]: {msg}").ToList();
     }
 }

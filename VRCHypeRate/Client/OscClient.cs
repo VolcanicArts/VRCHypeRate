@@ -8,8 +8,8 @@ namespace VRCHypeRate.Client;
 
 public class OscClient : UdpClient
 {
-    private static readonly string OSCURI = IPAddress.Loopback.ToString();
     private const int OSCPort = 9000;
+    private static readonly string OSCURI = IPAddress.Loopback.ToString();
 
     private readonly BaseHeartRateProvider HeartrateProvider;
 
@@ -32,7 +32,7 @@ public class OscClient : UdpClient
     {
         SendParameter(OSCParameter.HeartrateEnabled, true);
 
-        var normalisedHeartRate = (heartRate / 60.0f);
+        var normalisedHeartRate = heartRate / 60.0f;
         SendParameter(OSCParameter.HeartrateNormalised, normalisedHeartRate);
 
         var individualValues = heartRate.ToDigitArray(3);
