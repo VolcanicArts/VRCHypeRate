@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
 
-namespace VRCHypeRate.Models;
+namespace VRCHypeRate.HeartRateProvider.HypeRate.Models;
 
-public class WebSocketHeartBeatSendableModel : ISendableModel
+public class HeartBeatModel
 {
     [JsonProperty("event")]
     private string Event = "heartbeat";

@@ -1,8 +1,8 @@
 ﻿using CoreOSC;
 
-namespace VRCHypeRate.Client;
+namespace VRCHypeRate.OscClient;
 
-public enum OSCParameter
+public enum OscParameter
 {
     HeartrateEnabled,
     HeartrateNormalised,
@@ -11,9 +11,9 @@ public enum OSCParameter
     HeartrateHundreds
 }
 
-public static class OSCParameterExtensions
+public static class OscParameterExtensions
 {
-    public static Address GetOscAddress(this OSCParameter parameter)
+    public static Address GetOscAddress(this OscParameter parameter)
     {
         return new Address($"/avatar/parameters/{parameter.ToString()}");
     }

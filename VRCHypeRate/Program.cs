@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using VRCHypeRate.Client;
+using VRCHypeRate.HeartRateProvider.HypeRate;
 using VRCHypeRate.Models;
 using VRCHypeRate.Utils;
 
@@ -18,7 +18,7 @@ public static class Program
 
     private static void setupClient()
     {
-        new OscClient(new HypeRateProvider(Config.Id, Config.ApiKey)).Start();
+        new OscClient.OscClient(new HypeRateProvider(Config.Id, Config.ApiKey)).Start();
         Logger.Log("Press any key to close the program");
         Console.ReadKey(true);
     }

@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
-using VRCHypeRate.Models;
+using VRCHypeRate.HeartRateProvider.HypeRate.Models;
 using VRCHypeRate.Utils;
 
-namespace VRCHypeRate.Client;
+namespace VRCHypeRate.HeartRateProvider.HypeRate;
 
 public class HypeRateProvider : BaseHeartRateProvider
 {
@@ -57,14 +57,14 @@ public class HypeRateProvider : BaseHeartRateProvider
     private void sendHeartBeat(object? _)
     {
         Logger.Log("Sending HypeRate websocket heartbeat");
-        Send(new WebSocketHeartBeatSendableModel());
+        Send(new HeartBeatModel());
         heartBeatTimer?.Change(HeartbeatInternal, Timeout.Infinite);
     }
 
     private void sendJoinChannel()
     {
         Logger.Log($"Requesting to hook into heartrate for Id {Id}");
-        var joinChannelModel = new JoinChannelSendableModel
+        var joinChannelModel = new JoinChannelModel
         {
             Id = Id
         };

@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace VRCHypeRate.Models;
+namespace VRCHypeRate.HeartRateProvider.HypeRate.Models;
 
 public class HeartRateUpdateModel
 {

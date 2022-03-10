@@ -1,10 +1,9 @@
 ﻿using Newtonsoft.Json;
-using VRCHypeRate.Models;
 using VRCHypeRate.Utils;
 using WebSocket4Net;
 using ErrorEventArgs = SuperSocket.ClientEngine.ErrorEventArgs;
 
-namespace VRCHypeRate.Client;
+namespace VRCHypeRate.HeartRateProvider;
 
 public abstract class BaseHeartRateProvider
 {
@@ -30,7 +29,7 @@ public abstract class BaseHeartRateProvider
         Task.Factory.StartNew(run).Wait();
     }
 
-    protected void Send(ISendableModel data)
+    protected void Send(object data)
     {
         WebSocket.Send(JsonConvert.SerializeObject(data));
     }

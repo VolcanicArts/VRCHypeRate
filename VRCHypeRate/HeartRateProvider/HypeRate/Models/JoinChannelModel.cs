@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
 
-namespace VRCHypeRate.Models;
+namespace VRCHypeRate.HeartRateProvider.HypeRate.Models;
 
-public class JoinChannelSendableModel : ISendableModel
+public class JoinChannelModel
 {
     [JsonProperty("event")]
     private string Event = "phx_join";

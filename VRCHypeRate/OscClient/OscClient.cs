@@ -2,9 +2,10 @@
 using System.Net.Sockets;
 using CoreOSC;
 using CoreOSC.IO;
+using VRCHypeRate.HeartRateProvider;
 using VRCHypeRate.Utils;
 
-namespace VRCHypeRate.Client;
+namespace VRCHypeRate.OscClient;
 
 public class OscClient : UdpClient
 {
@@ -17,36 +18,36 @@ public class OscClient : UdpClient
     {
         HeartrateProvider = heartrateProvider;
         HeartrateProvider.OnHeartRateUpdate += HandleHeartRateUpdate;
-        HeartrateProvider.OnConnected += () => SendParameter(OSCParameter.HeartrateEnabled, true);
-        HeartrateProvider.OnDisconnected += () => SendParameter(OSCParameter.HeartrateEnabled, false);
+        HeartrateProvider.OnConnected += () => SendParameter(OscParameter.HeartrateEnabled, true);
+        HeartrateProvider.OnDisconnected += () => SendParameter(OscParameter.HeartrateEnabled, false);
     }
 
     public void Start()
     {
         Logger.Log($"Creating OSC client\nURI: {OSCURI}\nPort: {OSCPort}", LogLevel.Debug);
-        SendParameter(OSCParameter.HeartrateEnabled, false);
+        SendParameter(OscParameter.HeartrateEnabled, false);
         HeartrateProvider.Connect();
     }
 
     private void HandleHeartRateUpdate(int heartRate)
     {
-        SendParameter(OSCParameter.HeartrateEnabled, true);
+        SendParameter(OscParameter.HeartrateEnabled, true);
 
         var normalisedHeartRate = heartRate / 60.0f;
-        SendParameter(OSCParameter.HeartrateNormalised, normalisedHeartRate);
+        SendParameter(OscParameter.HeartrateNormalised, normalisedHeartRate);
 
         var individualValues = heartRate.ToDigitArray(3);
-        SendParameter(OSCParameter.HeartrateOnes, individualValues[2]);
-        SendParameter(OSCParameter.HeartrateTens, individualValues[1]);
-        SendParameter(OSCParameter.HeartrateHundreds, individualValues[0]);
+        SendParameter(OscParameter.HeartrateOnes, individualValues[2]);
+        SendParameter(OscParameter.HeartrateTens, individualValues[1]);
+        SendParameter(OscParameter.HeartrateHundreds, individualValues[0]);
     }
 
-    private void SendParameter(OSCParameter parameter, bool value)
+    private void SendParameter(OscParameter parameter, bool value)
     {
         SendParameter(parameter, value ? OscTrue.True : OscFalse.False);
     }
 
-    private void SendParameter(OSCParameter parameter, object value)
+    private void SendParameter(OscParameter parameter, object value)
     {
         Logger.Log($"Sending parameter {parameter} of value {value}", LogLevel.Debug);
         this.SendMessageAsync(new OscMessage(parameter.GetOscAddress(), new[] { value }));
