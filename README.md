@@ -7,6 +7,8 @@ Download the latest release from the [Release](https://github.com/VolcanicArts/V
 
 You will need a HypeRate API key to use this project, and you can request one in their [Discord](https://discord.gg/eTwfgU29cU) server.
 
+You will also need a compatible device that can run HypeRate. For a full list of supported devices, see HypeRate's supported devices page [here](https://www.hyperate.io/supported-devices)
+
 Create a config file where `VRCHypeRate.exe` is located and fill in the information accordingly:
 ```json
 {
