@@ -48,7 +48,7 @@ public class OscClient : UdpClient
 
     private void SendParameter(OSCParameter parameter, object value)
     {
-        Logger.Log($"Sending parameter {parameter.GetOscAddress()} of value {value}", LogLevel.Debug);
+        Logger.Log($"Sending parameter {parameter} of value {value}", LogLevel.Debug);
         this.SendMessageAsync(new OscMessage(parameter.GetOscAddress(), new[] { value }));
     }
 }
