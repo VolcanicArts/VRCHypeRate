@@ -10,6 +10,7 @@ public static class Logger
     public static void Error(string message)
     {
         Log(message, LogLevel.Error);
+        Console.ReadKey(true);
     }
 
     public static void Log(string message, LogLevel logLevel = DefaultLogLevel)
@@ -20,7 +21,6 @@ public static class Logger
         Storage.CreateOrAppendFile(LogFilePath, logMessages);
         if (logLevel < DefaultLogLevel) return;
         logMessages.ForEach(Console.WriteLine);
-        if (logLevel == LogLevel.Error) Console.ReadLine();
     }
 
     private static string? getClassName()
