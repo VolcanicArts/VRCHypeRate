@@ -5,6 +5,18 @@
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <IsPackable>false</IsPackable>
+        <PackageVersion>1.5.0</PackageVersion>
+        <Title>VRCHypeRate</Title>
+        <Authors>VolcanicArts</Authors>
+        <Description>A simple implementation for taking HypeRate.io heartrate values and sending them into VRChat over OSC</Description>
+        <Copyright>GNU General Public License V3</Copyright>
+        <PackageProjectUrl>https://github.com/VolcanicArts/VRCHypeRate</PackageProjectUrl>
+        <PackageLicenseUrl>https://github.com/VolcanicArts/VRCHypeRate/blob/master/LICENSE</PackageLicenseUrl>
+        <RepositoryUrl>https://github.com/VolcanicArts/VRCHypeRate.git</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <Company>VolcanicArts</Company>
+        <NeutralLanguage>en-GB</NeutralLanguage>
     </PropertyGroup>
 
     <ItemGroup>
