@@ -1,3 +1,6 @@
+# Hey!
+This repo is no longer used due to it being merged into my other project, VRCOSC, which you can find [here](https://github.com/VolcanicArts/VRCOSC)
+
 # VRCHypeRate
 
 A simple implementation for taking HypeRate.io heartrate values and sending them into VRChat over OSC.
